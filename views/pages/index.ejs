@@ -8,11 +8,23 @@
 </head>
 <body>
   <h2>BOOOOOOKKKKSS</h2>
-  <form action="/search">
-    <label for="search">Search:</label><input type='text' name="search">
-    <input type="radio" name="title" value="title">Title
-    <input type="radio" name="author" value="author">Author
-    <input type="submit" value="Submit">
+
+
+  <form action="/searches" method="post">
+    <input type="text" name="search" placeholder="Enter a title or author" required>
+    <fieldset>
+      <label for="title">
+        <span>Title</span>
+        <input type="radio" name="search" value="title" required>
+      </label>
+    </fieldset>
+    <fieldset>
+      <label for="author">
+        <span>Author</span>
+        <input type="radio" name="search" value="author" required>
+      </label>
+    </fieldset>
+    <button type="submit">Search the Google Books API</button>
   </form>
   
 </body>
