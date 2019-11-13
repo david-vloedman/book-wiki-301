@@ -5,6 +5,7 @@ const express = require('express');
 const superagent = require('superagent');
 const pg = require('pg');
 require('dotenv').config();
+const $ = require('jquery');
 
 // Application Setup
 const app = express();
@@ -84,7 +85,7 @@ function createBook(request, response){
 function getOneBook(request, response) {
   //use the id passed in from the front-end (ejs form) 
 
-  let SQL = `SELECT $1 FROM books`;
+  let SQL = `SELECT $1 FROM books`; 
   let values = [request.params.id];
   client.query(SQL, values).then(result => {
     let book = {
@@ -97,6 +98,7 @@ function getOneBook(request, response) {
     }
   });
 }
+
 
 
 function handleError(error, response) {

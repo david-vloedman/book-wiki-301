@@ -31,9 +31,28 @@
     </header>
     <main>
       <h4>Search Results</h4>
+      
       <ul class="search-results">
         <% searchResults.forEach(book => { %>
-          <%- include detail.ejs %>
+          <li data-book-id="<%= book.isbn %>">
+            <div class="book-container">
+              <img src=<%= book.image_url %>>
+              <section>
+                <h3><%= book.title %></h3>
+                <span><%= book.author %></span>
+                <p class="desc"><%= book.description %></p>  
+                <button class="lng-btn editBut" id="<%= book.isbn%>">Edit Book</button>
+              <form id="edit<%=book.isbn%>" action="">
+                <input type="text" name="title" required>
+                <input type="text" name="author" required>
+                <input type="text" name="isbn" required>
+                <input type="text" name="img_url" required>
+                <input type="text" name="description" required>
+                <input type="text" name="shelf" required>
+              </form>      
+              </section>
+            </section>
+          </li>
         <% }) %>
       </ul>
 
@@ -48,4 +67,14 @@
       </ul>
     </footer>
   </body>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+    <script>
+    $('.edit').hide();
+    $('.editBut').click(function (e) {
+      $(`edit${e.target.id}`).show()
+});
+  </script>
 </html>
