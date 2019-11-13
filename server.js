@@ -16,7 +16,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // API Routes
-app.get('/', getBooks) //define route to get all books
+app.get('/', newSearch); //define route to get all books
 app.get('/searches/new', newSearch);
 app.post('/searches', createSearch);
 app.post('/books', createBook)
