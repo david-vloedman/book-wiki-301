@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "seedDB": "psql -d book_app -f schema.sql"
   },
   "keywords": [],
   "author": "Code Fellows, LLC",
@@ -14,6 +15,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.2",
+    "jquery": "^3.4.1",
     "pg": "^7.12.1",
     "superagent": "^3.8.3"
   }
