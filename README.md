@@ -27,12 +27,24 @@ navigate to localhost:3000
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 -->
 
-Number and name of feature: ________________________________
+Number and name of feature:
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 
 
-Start time: _____
+Start time: 
 
-Finish time: _____
+Finish time: 
 
-Actual time needed to complete: _____
+Actual time needed to complete: 
+
+
+
+Number and name of feature:
+
+Estimate of time needed to complete: 
+
+Start time: 
+
+Finish time: 
+
+Actual time needed to complete: 

@@ -1,28 +1,18 @@
 {
-  "name": "book-wiki-301",
+  "name": "book_list_app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Application that will allow users to upload and review books",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/david-vloedman/book-wiki-301.git"
+    "start": "node server.js",
+    "watch": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/david-vloedman/book-wiki-301/issues"
-  },
-  "homepage": "https://github.com/david-vloedman/book-wiki-301#readme",
+  "author": "Code Fellows, LLC",
+  "license": "MIT",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "ejs": "^2.7.1",
-    "express": "^4.17.1",
-    "superagent": "^5.1.0"
+    "ejs": "^2.6.1",
+    "express": "^4.16.2",
+    "superagent": "^3.8.3"
   }
 }
