@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+
 // Setup DB
 const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
@@ -22,12 +23,14 @@ client.on('err', err => console.error(err));
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
 
+
 // API Routes
 app.get('/', getBooks); //define route to get all books
 app.get('/searches/new', newSearch);
 app.post('/searches', createSearch);
 app.post('/books', createBook)
 app.get('/books/:id', getOneBook);
+
 
 
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
@@ -64,11 +67,7 @@ function createSearch(request, response) {
 }
 
 function getBooks(request, response) {
-  //create a SQL statement to get all books in the the database that was saved previously
-  //render the books on an EJS page
-  //catch any errors
-  let SQL = `SELECT * FROM BOOKS`;
-  
+  let SQL = `SELECT * FROM BOOKS`;  
   client.query(SQL).then(results => {
     const bookCount = results.rowCount;
     const books = results.rows.map(book => new Book(book));
@@ -76,16 +75,29 @@ function getBooks(request, response) {
   });
 }
 
-function createBook(){
+function createBook(request, response){
   //create a SQL statement to insert book
   //return id of book back to calling function
 
 }
 
-function getOneBook(){
+function getOneBook(request, response) {
   //use the id passed in from the front-end (ejs form) 
 
+  let SQL = `SELECT $1 FROM books`;
+  let values = [request.params.id];
+  client.query(SQL, values).then(result => {
+    let book = {
+      title: result.rows[0].title,
+      author: result.rows[0].author,
+      description: result.rows[0].description,
+      isbn: result.rows[0].isbn,
+      bookShelf: result.row[0].book_shelf,
+      image: result.row[0].image_url
+    }
+  });
 }
+
 
 function handleError(error, response) {
   response.render('pages/error', { error: error });

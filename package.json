@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "seedDB": "psql -d book_app -f schema.sql"
   },
   "keywords": [],
   "author": "Code Fellows, LLC",
