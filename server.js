@@ -48,7 +48,7 @@ function Book(info) {
 }
 
 function newSearch(request, response) {
-  response.render('pages/index');
+  response.render('pages/searches/new');
 }
 
 function createSearch(request, response) {
@@ -70,8 +70,9 @@ function getBooks(request, response) {
   let SQL = `SELECT * FROM BOOKS`;
   
   client.query(SQL).then(results => {
+    const bookCount = results.rowCount;
     const books = results.rows.map(book => new Book(book));
-    response.render('pages/index', { savedBooks: books });
+    response.render('pages/index', { savedBooks: books, bookCount: bookCount });
   });
 }
 
