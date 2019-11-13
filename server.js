@@ -3,6 +3,8 @@
 // Application Dependencies
 const express = require('express');
 const superagent = require('superagent');
+const pg = require('pg');
+require('dotenv').config();
 
 // Application Setup
 const app = express();
@@ -12,11 +14,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// Setup DB
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('err', err => console.error(err));
+
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
 
 // API Routes
-app.get('/', newSearch); //define route to get all books
+app.get('/', getBooks); //define route to get all books
 app.get('/searches/new', newSearch);
 app.post('/searches', createSearch);
 app.post('/books', createBook)
@@ -41,7 +48,7 @@ function Book(info) {
 }
 
 function newSearch(request, response) {
-  response.render('pages/index');
+  response.render('pages/searches/new');
 }
 
 function createSearch(request, response) {
@@ -56,10 +63,17 @@ function createSearch(request, response) {
     .catch(err => handleError(err, response));
 }
 
-function getBooks() {
+function getBooks(request, response) {
   //create a SQL statement to get all books in the the database that was saved previously
   //render the books on an EJS page
   //catch any errors
+  let SQL = `SELECT * FROM BOOKS`;
+  
+  client.query(SQL).then(results => {
+    const bookCount = results.rowCount;
+    const books = results.rows.map(book => new Book(book));
+    response.render('pages/index', { savedBooks: books, bookCount: bookCount });
+  });
 }
 
 function createBook(){
