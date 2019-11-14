@@ -1,80 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Collection</title>
-    <link rel="stylesheet" href="/styles/reset.css">
-    <link rel="stylesheet" href="/styles/icons.css">
-    <link rel="stylesheet" href="/styles/base.css">
-    <link rel="stylesheet" href="/styles/layout.css">
-    <link rel="stylesheet" href="/styles/modules/error.css">
-    <link rel="stylesheet" href="/styles/modules/partials/header.css">
-    <link rel="stylesheet" href="/styles/modules/partials/footer.css">
-    <link rel="icon" type="image/png" href="https://www.freeiconspng.com/uploads/book-icon--icon-search-engine-6.png">
-    <link rel="stylesheet" href="/styles/modules/searches/show.css">
-    <link rel="stylesheet" href="/styles/modules/books/show.css">
-  </head>
+
+  <%- include ../../layout/head.ejs %>
   <body>
-    <header>
-      <div>
-        <a href="/">
-          <h1>Best Books!</h1>
-        </a>
-      </div>
-      <nav>
-        <div class="icon-menu"></div>
-        <ul>
-          <li><a href="/">Home</a></li>
-        </ul>
-      </nav>
-    </header>
+
+    <%- include ../../layout/header.ejs %>
+
     <main>
       <h4>Search Results</h4>
       
       <ul class="search-results">
         <% searchResults.forEach(book => { %>
           <li data-book-id="<%= book.isbn %>">
-            <div class="book-container">
-              <img src=<%= book.image_url %>>
-              <section>
-                <h3><%= book.title %></h3>
-                <span><%= book.author %></span>
-                <p class="desc"><%= book.description %></p>  
-                <button class="lng-btn editBut" id="<%= book.isbn%>">Edit Book</button>
-              <form id="edit<%=book.isbn%>" action="">
-                <input type="text" name="title" required>
-                <input type="text" name="author" required>
-                <input type="text" name="isbn" required>
-                <input type="text" name="img_url" required>
-                <input type="text" name="description" required>
-                <input type="text" name="shelf" required>
-              </form>      
-              </section>
-            </section>
+            <%- include ../books/detail.ejs %>
+            <button class="select-button">Select this Book</button>
+            <form action="/books" class="hide-me" method="POST">
+              <input type="text" name="title" id="title" value="<%= book.title %>">
+              <input type="text" name="author" id="author" value="<%= book.author %>">
+              <input type="hidden" name="image_url" id="image_url" value="<%= book.image_url %>">
+              <textarea name="description" id="" cols="30" rows="10"><%= book.description %></textarea>
+              <input type="text" name="bookshelf" id="bookshelf" required>
+              <button type="submit">Save this Book</button>
+            </form>
           </li>
         <% }) %>
-      </ul>
+      </ul>     
 
-      
     </main>
-    <footer>
-      <ul>
-        <li><span class="icon-mail2"><a href=""></a></span></li>
-        <li><span class="icon-twitter"><a href=""></a></span></li>
-        <li><span class="icon-github"><a href=""></a></span></li>
-        <li><span class="icon-linkedin2"><a href=""></a></span></li>
-      </ul>
-    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/app.js"></script>
+    <%- include ../../layout/footer.ejs %>
+    
   </body>
-  <script
-    src="https://code.jquery.com/jquery-3.4.1.js"
-    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous"></script>
-    <script>
-    $('.edit').hide();
-    $('.editBut').click(function (e) {
-      $(`edit${e.target.id}`).show()
-});
-  </script>
+
 </html>
