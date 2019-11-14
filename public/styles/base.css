@@ -12,3 +12,7 @@ main {
   flex: 1;
   margin-top: 14vw;
 }
+
+.hide-me{
+  display: none;
+}
