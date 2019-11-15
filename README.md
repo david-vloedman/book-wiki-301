@@ -27,24 +27,27 @@ navigate to localhost:3000
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 -->
 
-Number and name of feature:
 
-Estimate of time needed to complete: 
-
-Start time: 
-
-Finish time: 
-
-Actual time needed to complete: 
+Didn't do too well at writing up each task.
 
 
+Number and name of feature: Get and save
 
-Number and name of feature:
+Estimate of time needed to complete: 4 hours
 
-Estimate of time needed to complete: 
+Start time: Monday
 
-Start time: 
+Finish time: Tuesday
 
-Finish time: 
+Actual time needed to complete: 4 hours
 
-Actual time needed to complete: 
+
+Number and name of feature: Update and Delete
+
+Estimate of time needed to complete: 6 hours
+
+Start time: Wednesday
+
+Finish time: Friday
+
+Actual time needed to complete: 6 hours
