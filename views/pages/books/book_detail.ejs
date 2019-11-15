@@ -12,7 +12,12 @@
         <h4><%= book.title %></h4>
         <%- include detail.ejs %>
         <button class="select-button">Edit Details</button>
-        <form action="/books" class="hide-me" method="POST">
+
+
+        
+
+
+        <form action="/books/<%=book.id%>" class="hide-me" method="POST">
           <input type="hidden" name="_method" value="put">
           <input type="text" name="title" id="title" value="<%= book.title %>">
           <input type="text" name="author" id="author" value="<%= book.author %>">
@@ -26,6 +31,11 @@
           </select>
           <button type="submit">Save to Database</button>
         </form>
+
+        <form action="/books" method="POST">
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" class="select-button">Delete book</a>
+          </form>
       </li>
     </ul>
 
