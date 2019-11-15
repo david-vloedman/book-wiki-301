@@ -1,11 +1,15 @@
 <section class="book-container">    
   <img src=<%= book.image_url %>>  
+  <br>
   <section>
-    <h3><%= book.title %></h3>
-    <p><%= book.author %></p>
-    <p class="desc"><%= book.description %></p> 
-    <p><%= book.isbn %></p>       
-    <p><%= book.book_shelf %></p>
+    
+    <h4>Author: <%= book.author %></h4>
+    <blockquote><%= book.description %></blockquote> 
+    <br>
+    <p><%= book.isbn %></p>    
+    <br>   
+    <p>Shelf: <%= book.book_shelf %></p>
+    <br>
   </section>
 </section>
     
