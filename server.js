@@ -59,7 +59,7 @@ app.post('/searches', createSearch);
 app.post('/books', createBook);
 app.put('/books/:id', updateBook);
 app.get('/books/:id', getOneBook);
-app.delete('books', deleteBook);
+app.delete('/books/:id',deleteBook);
 
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
@@ -87,9 +87,9 @@ function Book(info) {
   this.title = info.title ? info.title : 'No title available';
   this.author = info.authors ? info.authors[0] : 'No author available';
   this.isbn = info.industryIdentifiers ? `ISBN_13 ${info.industryIdentifiers[0].identifier}` : 'No ISBN available';
-  this.image_url = info.imageLinks ? info.imageLinks.smallThumbnail : placeholderImage;
+  this.image_url = info.imageLinks? info.imageLinks.smallThumbnail : placeholderImage;
   this.description = info.description ? info.description : 'No description available';
-  this.id = info.industryIdentifiers ? `${info.industryIdentifiers[0].identifier}` : '';
+  
 }
 //******************************************************************************************* */ 
 //  
@@ -118,9 +118,9 @@ function getBooks(request, response) {
   let SQL = `SELECT * FROM BOOKS`;  
   client.query(SQL).then(results => {
     const bookCount = results.rowCount;
-    const books = results.rows.map(book => new Book(book));
+    const books = results.rows;
     response.render('pages/index', { savedBooks: books, bookCount: bookCount });
-  });
+  }).catch(error => handleError(error));
 }
 
 function createBook(request, response) {
@@ -133,7 +133,7 @@ function createBook(request, response) {
   return client.query(SQL, values)
     .then(result => {
       response.redirect(`/books/${result.rows[0].id}`);      
-    });
+    }).catch(error => handleError(error));
 }
 
 function getOneBook(request,response){
@@ -144,11 +144,11 @@ function getOneBook(request,response){
       return client.query(SQL, values)
         .then(result => response.render('pages/books/book_detail', {book: result.rows[0], shelves: shelves.rows}))
     })
-    .catch(handleError);
+    .catch(error => handleError(error));
 }
 function getBookShelves() {
   let SQL = 'SELECT DISTINCT book_shelf FROM books ORDER BY book_shelf';
-  return client.query(SQL);
+  return client.query(SQL).catch(error => handleError(error));
 }
 
 function updateBook(request, response) {
@@ -159,11 +159,13 @@ function updateBook(request, response) {
   
   return client.query(SQL, values).then(results => {
     response.redirect(`/books/${id}`);
-  });
+  }).catch(error => handleError(error));
 }
 
 function deleteBook(request, response) {
-  response.send('delete book');
+  const values = [request.params.id];
+  const SQL = `DELETE FROM books WHERE id=$1`;
+  client.query(SQL, values).then(_ => response.redirect('/')).catch(error => handleError(error));
 }
 
 

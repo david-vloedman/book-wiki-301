@@ -11,7 +11,8 @@
       <li>
         <h4><%= book.title %></h4>
         <%- include detail.ejs %>
-        <button class="select-button">Edit Details</button>
+        <br>
+        <button type="submit" class="select-button">Edit Details</button>
 
 
         
@@ -29,12 +30,13 @@
             <option value="<%= shelf.book_shelf %>"><%= shelf.book_shelf %></option>
             <%}) %>
           </select>
+          <br>
           <button type="submit">Save to Database</button>
         </form>
 
-        <form action="/books" method="POST">
+        <form action="/books/<%=book.id%>" method="POST">
           <input type="hidden" name="_method" value="delete">
-          <button type="submit" class="select-button">Delete book</a>
+          <button type="submit">Delete book</a>
           </form>
       </li>
     </ul>
