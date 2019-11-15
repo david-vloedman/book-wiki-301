@@ -59,6 +59,7 @@ app.post('/searches', createSearch);
 app.post('/books', createBook);
 app.put('/books/:id', updateBook);
 app.get('/books/:id', getOneBook);
+app.delete('books', deleteBook);
 
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
@@ -159,7 +160,10 @@ function updateBook(request, response) {
   return client.query(SQL, values).then(results => {
     response.redirect(`/books/${id}`);
   });
+}
 
+function deleteBook(request, response) {
+  response.send('delete book');
 }
 
 
