@@ -7,8 +7,6 @@ const pg = require('pg');
 require('dotenv').config();
 const methodOverride = require('method-override');
 
-
-
 // Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,8 +14,16 @@ const PORT = process.env.PORT || 3000;
 // Application Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
-// Setup methodOverride
+
+//******************************************************************************************* */ 
+//  
+// 
+// 
+//  METHOD OVERRIDE
+// 
+// ********************************************************************************************
 app.use(methodOverride((request, response) => {
   if (request.body && typeof request.body === 'object' && '_method' in request.body) {
     // look in urlencoded POST bodies and delete it
@@ -26,35 +32,57 @@ app.use(methodOverride((request, response) => {
     return method;
   }
 }));
-// Setup DB
+
+//******************************************************************************************* */ 
+//  
+// 
+// 
+//  DATABASE SETUP
+// 
+// ********************************************************************************************
 const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('err', err => console.error(err));
 
-// Set the view engine for server-side templating
-app.set('view engine', 'ejs');
 
 
-// API Routes
+//******************************************************************************************* */ 
+//  
+// 
+// 
+//  ROUTES
+// 
+// ********************************************************************************************
 app.get('/', getBooks); //define route to get all books
 app.get('/searches/new', newSearch);
 app.post('/searches', createSearch);
-app.post('/books', createBook)
+app.post('/books', createBook);
+app.put('/books/:id', updateBook);
 app.get('/books/:id', getOneBook);
-
-
 
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
+
+
+//******************************************************************************************* */ 
+//  
+// 
+// 
+//  START SERVER ENTRY POINT
+// 
+// ********************************************************************************************
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
-// HELPER FUNCTIONS
+
+//******************************************************************************************* */ 
+//  
+// 
+// 
+//  HELPER FUNCTIONS
+// 
+// ********************************************************************************************
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
-
-  // If every image path is changed to HTTPS, every image doesn't display.
-  let httpRegex = /^(http:\/\/)/g
-
   this.title = info.title ? info.title : 'No title available';
   this.author = info.authors ? info.authors[0] : 'No author available';
   this.isbn = info.industryIdentifiers ? `ISBN_13 ${info.industryIdentifiers[0].identifier}` : 'No ISBN available';
@@ -62,7 +90,13 @@ function Book(info) {
   this.description = info.description ? info.description : 'No description available';
   this.id = info.industryIdentifiers ? `${info.industryIdentifiers[0].identifier}` : '';
 }
-
+//******************************************************************************************* */ 
+//  
+// 
+// 
+//  CALLBACK FUNCTIONS
+// 
+// ********************************************************************************************
 function newSearch(request, response) {
   response.render('pages/searches/new');
 }
@@ -91,16 +125,13 @@ function getBooks(request, response) {
 function createBook(request, response) {
   
   const { author, title, isbn, image_url, description, bookshelf } = request.body;
-  
-  //create a SQL statement to insert book
-  //return id of book back to calling function
+ 
   let SQL = `INSERT INTO books (author, title, isbn, image_url, description, book_shelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
   const values = [author, title, isbn, image_url, description, bookshelf];
   
   return client.query(SQL, values)
     .then(result => {
-      response.redirect(`/books/${result.rows[0].id}`);
-      // response.render(`books/${}`);
+      response.redirect(`/books/${result.rows[0].id}`);      
     });
 }
 
@@ -117,6 +148,18 @@ function getOneBook(request,response){
 function getBookShelves() {
   let SQL = 'SELECT DISTINCT book_shelf FROM books ORDER BY book_shelf';
   return client.query(SQL);
+}
+
+function updateBook(request, response) {
+  const { author, title, description, bookshelf } = request.body;
+  const id = request.params.id;
+  const values = [author, id, title, description, bookshelf]
+  let SQL = `UPDATE books SET author=$1, title=$3, description=$4, book_shelf=$5 WHERE id=$2`;
+  
+  return client.query(SQL, values).then(results => {
+    response.redirect(`/books/${id}`);
+  });
+
 }
 
 
